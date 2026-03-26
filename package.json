@@ -1,0 +1,23 @@
+{
+  "name": "agent-focus-mode",
+  "publisher": "local",
+  "displayName": "Agent Focus Mode",
+  "description": "Toggle maximized agent panel",
+  "version": "0.0.2",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "agentFocusMode.toggle",
+        "title": "Agent Focus Mode: Toggle",
+        "icon": "$(comment-discussion)"
+      }
+    ],
+    "menus": {}
+  }
+}
