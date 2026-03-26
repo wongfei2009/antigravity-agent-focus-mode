@@ -2,8 +2,8 @@
   "name": "agent-focus-mode",
   "publisher": "local",
   "displayName": "Agent Focus Mode",
-  "description": "Toggle maximized agent panel",
-  "version": "0.0.2",
+  "description": "Maximize agent panel while keeping sidebar visible",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -16,6 +16,14 @@
         "command": "agentFocusMode.toggle",
         "title": "Agent Focus Mode: Toggle",
         "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "agentFocusMode.patch",
+        "title": "Agent Focus Mode: Apply Patch"
+      },
+      {
+        "command": "agentFocusMode.unpatch",
+        "title": "Agent Focus Mode: Revert Patch"
       }
     ],
     "menus": {}

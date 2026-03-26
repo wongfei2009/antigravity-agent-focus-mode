@@ -1,21 +1,10 @@
 # Agent Focus Mode for Google Antigravity
 
-A minimal extension + workbench patch that adds an **Agent Focus Mode** to Google Antigravity — maximizing the agent panel while keeping the sidebar visible.
+A self-patching extension that adds **Agent Focus Mode** to Google Antigravity — maximizing the agent panel while keeping the sidebar visible.
 
-By default, Antigravity's "Maximize Secondary Side Bar" hides *everything* including the sidebar. This patch modifies that behavior so the sidebar stays visible, giving you a clean **sidebar + full-width agent** layout.
-
-## What's included
-
-| File | Purpose |
-|------|---------|
-| `extension.js` | Registers a status bar button and command to toggle agent focus mode |
-| `package.json` | Extension manifest |
-| `patch-workbench.sh` | Patches `workbench.desktop.main.js` to keep sidebar visible during maximize |
-| `unpatch-workbench.sh` | Reverts all patches from backup |
+By default, Antigravity's "Maximize Secondary Side Bar" hides *everything* including the sidebar. This extension patches that behavior so the sidebar stays visible, giving you a clean **sidebar + full-width agent** layout.
 
 ## Installation
-
-### 1. Install the extension
 
 Copy this folder to your Antigravity extensions directory:
 
@@ -28,7 +17,7 @@ Register it in `~/.antigravity/extensions/extensions.json` by adding:
 ```json
 {
     "identifier": { "id": "local.agent-focus-mode" },
-    "version": "0.0.1",
+    "version": "0.1.0",
     "location": {
         "$mid": 1,
         "path": "<HOME>/.antigravity/extensions/agent-focus-mode-0.0.1",
@@ -39,41 +28,48 @@ Register it in `~/.antigravity/extensions/extensions.json` by adding:
 }
 ```
 
-### 2. Apply the workbench patch
+Restart Antigravity. The extension auto-patches on first launch and prompts you to restart.
 
-```bash
-~/.antigravity/extensions/agent-focus-mode-0.0.1/patch-workbench.sh
-```
+## Usage
 
-### 3. Restart Antigravity
-
-You should see an **"Agent Focus"** button in the bottom-right status bar.
-
-## After Antigravity updates
-
-Antigravity updates will overwrite the patched files. Re-apply:
-
-```bash
-~/.antigravity/extensions/agent-focus-mode-0.0.1/patch-workbench.sh
-```
-
-If the script reports all patches "skipped", the workbench source has changed and the patch strings need updating for the new version.
-
-## Reverting
-
-```bash
-~/.antigravity/extensions/agent-focus-mode-0.0.1/unpatch-workbench.sh
-```
+- **Status bar**: Click "Agent Focus" in the bottom-right
+- **Command Palette**: `Cmd+Shift+P` → "Agent Focus Mode: Toggle"
 
 ## How it works
 
-The patch makes 3 surgical changes to `workbench.desktop.main.js`:
+On startup, the extension checks if the workbench needs patching. If so, it:
 
-1. **Maximize path**: Removes the call that hides the sidebar when maximizing the auxiliary bar
-2. **Sidebar guard**: Removes the guard that triggers de-maximize when the sidebar is shown
-3. **Restore path**: Skips redundant sidebar restore on un-maximize (since it was never hidden)
+1. Creates backups of the original files
+2. Applies 3 surgical patches to `workbench.desktop.main.js`
+3. Updates the checksum in `product.json` (prevents "corrupted installation" warning)
+4. Prompts you to restart
 
-The checksum in `product.json` is also updated to prevent the "installation corrupted" warning.
+After an **Antigravity update**, the extension detects the patch is missing and re-applies it automatically on next launch.
+
+### The 3 patches
+
+| # | What | Why |
+|---|------|-----|
+| 1 | Skip hiding sidebar during auxiliary bar maximize | Sidebar stays visible in agent focus mode |
+| 2 | Remove de-maximize guard from sidebar toggle | Toggling sidebar no longer undoes the maximize |
+| 3 | Skip sidebar restore on un-maximize | Sidebar was never hidden, no need to restore |
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `Agent Focus Mode: Toggle` | Toggle maximized agent panel |
+| `Agent Focus Mode: Apply Patch` | Manually re-apply the workbench patch |
+| `Agent Focus Mode: Revert Patch` | Restore original workbench from backup |
+
+## Files
+
+| File | Purpose |
+|------|---------|
+| `extension.js` | Extension logic: auto-patch, toggle, status bar |
+| `package.json` | Extension manifest |
+| `patch-workbench.sh` | Standalone patch script (optional, for manual use) |
+| `unpatch-workbench.sh` | Standalone revert script (optional, for manual use) |
 
 ## Tested on
 
