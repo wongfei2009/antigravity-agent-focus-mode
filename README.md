@@ -53,6 +53,7 @@ After an **Antigravity update**, the extension detects the patch is missing and 
 | 1 | Skip hiding sidebar during auxiliary bar maximize | Sidebar stays visible in agent focus mode |
 | 2 | Remove de-maximize guard from sidebar toggle | Toggling sidebar no longer undoes the maximize |
 | 3 | Skip sidebar restore on un-maximize | Sidebar was never hidden, no need to restore |
+| 4 | Hide "Open Agent Manager" button | Removes the button from the titlebar |
 
 ## Commands
 

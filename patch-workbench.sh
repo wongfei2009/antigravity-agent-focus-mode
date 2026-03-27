@@ -7,7 +7,8 @@
 #   1. Maximize: skips hiding the sidebar
 #   2. Sidebar guard: showing sidebar no longer triggers de-maximize
 #   3. Restore: skips sidebar restore (since it was never hidden)
-#   4. Updates checksum in product.json to suppress corruption warning
+#   4. Hide "Open Agent Manager" button from titlebar
+#   5. Updates checksum in product.json to suppress corruption warning
 #
 # Safe to re-run. Creates backups before patching.
 # Re-apply after each Antigravity update.
@@ -79,10 +80,20 @@ if old3 in content:
 else:
     print(f"  PATCH 3 skipped: already patched or version changed")
 
+# PATCH 4: Hide "Open Agent Manager" button
+old4 = 'se(this.ub,this.nb),this.kb'
+new4 = 'this.kb'
+if old4 in content:
+    content = content.replace(old4, new4, 1)
+    patches += 1
+    print(f"  PATCH 4 applied: hide Open Agent Manager button")
+else:
+    print(f"  PATCH 4 skipped: already patched or version changed")
+
 if patches > 0:
     with open(workbench, 'w') as f:
         f.write(content)
-    print(f"\n  Workbench: {patches}/3 patches applied.")
+    print(f"\n  Workbench: {patches}/4 patches applied.")
 else:
     print(f"\n  Workbench: no patches needed.")
 

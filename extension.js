@@ -23,6 +23,11 @@ const PATCHES = [
         old: 'this.$b(!e?.editorVisible),this.dc(!e?.panelVisible),this.ac(!e?.sideBarVisible)',
         new: 'this.$b(!e?.editorVisible),this.dc(!e?.panelVisible)',
     },
+    {
+        name: 'hide Open Agent Manager button',
+        old: 'se(this.ub,this.nb),this.kb',
+        new: 'this.kb',
+    },
 ];
 
 let statusBarItem;
@@ -144,7 +149,7 @@ function activate(context) {
             if (result.success && result.applied?.length > 0) {
                 vscode.window
                     .showInformationMessage(
-                        `Agent Focus Mode: patch applied (${result.applied.length}/3). Restart to take effect.`,
+                        `Agent Focus Mode: patch applied (${result.applied.length}/${PATCHES.length}). Restart to take effect.`,
                         'Restart Now'
                     )
                     .then(choice => {
