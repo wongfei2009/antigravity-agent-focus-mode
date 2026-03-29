@@ -40,20 +40,21 @@ Restart Antigravity. The extension auto-patches on first launch and prompts you 
 On startup, the extension checks if the workbench needs patching. If so, it:
 
 1. Creates backups of the original files
-2. Applies 3 surgical patches to `workbench.desktop.main.js`
+2. Applies 5 surgical patches to `workbench.desktop.main.js`
 3. Updates the checksum in `product.json` (prevents "corrupted installation" warning)
 4. Prompts you to restart
 
 After an **Antigravity update**, the extension detects the patch is missing and re-applies it automatically on next launch.
 
-### The 3 patches
+### The 5 patches
 
 | # | What | Why |
 |---|------|-----|
 | 1 | Skip hiding sidebar during auxiliary bar maximize | Sidebar stays visible in agent focus mode |
-| 2 | Remove de-maximize guard from sidebar toggle | Toggling sidebar no longer undoes the maximize |
-| 3 | Skip sidebar restore on un-maximize | Sidebar was never hidden, no need to restore |
-| 4 | Hide "Open Agent Manager" button | Removes the button from the titlebar |
+| 2 | Grow the auxiliary bar into the old editor width | The right-side agent pane takes the reclaimed space |
+| 3 | Remove de-maximize guard from sidebar toggle | Toggling sidebar no longer undoes the maximize |
+| 4 | Skip sidebar restore on un-maximize | Sidebar was never hidden, no need to restore |
+| 5 | Hide "Open Agent Manager" button | Removes the button from the titlebar |
 
 ## Commands
 
@@ -67,9 +68,11 @@ After an **Antigravity update**, the extension detects the patch is missing and 
 
 | File | Purpose |
 |------|---------|
-| `extension.js` | Extension logic: auto-patch, toggle, status bar |
+| `extension.js` | Extension activation, commands, status bar |
+| `patches.js` | Shared workbench patch definitions and helpers |
 | `package.json` | Extension manifest |
 | `patch-workbench.sh` | Standalone patch script (optional, for manual use) |
+| `tests/patches.test.js` | Regression test for the workbench patch transforms |
 | `unpatch-workbench.sh` | Standalone revert script (optional, for manual use) |
 
 ## Tested on

@@ -2,33 +2,11 @@ const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { PATCHES, applyPatches, needsPatching } = require('./patches');
 
 const WORKBENCH_REL = 'out/vs/workbench/workbench.desktop.main.js';
 const PRODUCT_REL = 'product.json';
 const CHECKSUM_KEY = 'vs/workbench/workbench.desktop.main.js';
-
-const PATCHES = [
-    {
-        name: 'skip hiding sidebar during maximize',
-        old: 'e.sideBarVisible&&this.ac(!0),e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0)',
-        new: 'e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0)',
-    },
-    {
-        name: 'sidebar toggle no longer triggers de-maximize',
-        old: 'ac(t){if(!(!t&&this.setAuxiliaryBarMaximized(!1)&&this.isVisible("workbench.parts.sidebar"))){if(',
-        new: 'ac(t){if(!0){if(',
-    },
-    {
-        name: 'skip sidebar restore on un-maximize',
-        old: 'this.$b(!e?.editorVisible),this.dc(!e?.panelVisible),this.ac(!e?.sideBarVisible)',
-        new: 'this.$b(!e?.editorVisible),this.dc(!e?.panelVisible)',
-    },
-    {
-        name: 'hide Open Agent Manager button',
-        old: 'se(this.ub,this.nb),this.kb',
-        new: 'this.kb',
-    },
-];
 
 let statusBarItem;
 
@@ -36,30 +14,6 @@ function getAppRoot() {
     const appRoot = vscode.env.appRoot;
     // appRoot points to /Applications/Antigravity.app/Contents/Resources/app
     return appRoot;
-}
-
-function isPatched(content) {
-    // If all old strings are absent, we're patched (or version changed)
-    // If any old string is present, we need to patch
-    return PATCHES.every(p => !content.includes(p.old));
-}
-
-function needsPatching(content) {
-    return PATCHES.some(p => content.includes(p.old));
-}
-
-function applyPatches(content) {
-    let patched = content;
-    const applied = [];
-
-    for (const patch of PATCHES) {
-        if (patched.includes(patch.old)) {
-            patched = patched.replace(patch.old, patch.new);
-            applied.push(patch.name);
-        }
-    }
-
-    return { content: patched, applied };
 }
 
 function computeChecksum(buffer) {

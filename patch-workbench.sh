@@ -7,8 +7,9 @@
 #   1. Maximize: skips hiding the sidebar
 #   2. Sidebar guard: showing sidebar no longer triggers de-maximize
 #   3. Restore: skips sidebar restore (since it was never hidden)
-#   4. Hide "Open Agent Manager" button from titlebar
-#   5. Updates checksum in product.json to suppress corruption warning
+#   4. Grow the auxiliary bar into the editor's old width
+#   5. Hide "Open Agent Manager" button from titlebar
+#   6. Updates checksum in product.json to suppress corruption warning
 #
 # Safe to re-run. Creates backups before patching.
 # Re-apply after each Antigravity update.
@@ -50,50 +51,60 @@ with open(workbench, 'r') as f:
 
 patches = 0
 
-# PATCH 1: Remove sidebar hide from maximize path
-old1 = 'e.sideBarVisible&&this.ac(!0),e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0)'
-new1 = 'e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0)'
+# PATCH 1: Grow the auxiliary bar into the editor's old width
+old1 = 'const i=this.H.getViewSize(this.P).width;this.nb.setRuntimeValue(tr.AUXILIARYBAR_LAST_NON_MAXIMIZED_SIZE,i),e.sideBarVisible&&this.ac(!0),e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0),this.nb.setRuntimeValue(tr.AUXILIARYBAR_LAST_NON_MAXIMIZED_VISIBILITY,e)'
+new1 = 'const i=this.H.getViewSize(this.P),n=e.editorVisible?this.H.getViewSize(this.Q).width:0;this.nb.setRuntimeValue(tr.AUXILIARYBAR_LAST_NON_MAXIMIZED_SIZE,i.width),e.sideBarVisible&&this.ac(!0),e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0),this.H.resizeView(this.P,{width:i.width+n,height:i.height}),this.nb.setRuntimeValue(tr.AUXILIARYBAR_LAST_NON_MAXIMIZED_VISIBILITY,e)'
 if old1 in content:
     content = content.replace(old1, new1, 1)
     patches += 1
-    print(f"  PATCH 1 applied: skip hiding sidebar during maximize")
+    print(f"  PATCH 1 applied: grow auxiliary bar into editor width")
 else:
     print(f"  PATCH 1 skipped: already patched or version changed")
 
-# PATCH 2: Remove de-maximize guard from sidebar show/hide
-old2 = 'ac(t){if(!(!t&&this.setAuxiliaryBarMaximized(!1)&&this.isVisible("workbench.parts.sidebar"))){if('
-new2 = 'ac(t){if(!0){if('
+# PATCH 2: Remove sidebar hide from maximize path
+old2 = 'e.sideBarVisible&&this.ac(!0),e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0)'
+new2 = 'e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0)'
 if old2 in content:
     content = content.replace(old2, new2, 1)
     patches += 1
-    print(f"  PATCH 2 applied: sidebar toggle no longer triggers de-maximize")
+    print(f"  PATCH 2 applied: skip hiding sidebar during maximize")
 else:
     print(f"  PATCH 2 skipped: already patched or version changed")
 
-# PATCH 3: Skip sidebar restore on un-maximize
-old3 = 'this.$b(!e?.editorVisible),this.dc(!e?.panelVisible),this.ac(!e?.sideBarVisible)'
-new3 = 'this.$b(!e?.editorVisible),this.dc(!e?.panelVisible)'
+# PATCH 3: Remove de-maximize guard from sidebar show/hide
+old3 = 'ac(t){if(!(!t&&this.setAuxiliaryBarMaximized(!1)&&this.isVisible("workbench.parts.sidebar"))){if('
+new3 = 'ac(t){if(!0){if('
 if old3 in content:
     content = content.replace(old3, new3, 1)
     patches += 1
-    print(f"  PATCH 3 applied: skip sidebar restore on un-maximize")
+    print(f"  PATCH 3 applied: sidebar toggle no longer triggers de-maximize")
 else:
     print(f"  PATCH 3 skipped: already patched or version changed")
 
-# PATCH 4: Hide "Open Agent Manager" button
-old4 = 'se(this.ub,this.nb),this.kb'
-new4 = 'this.kb'
+# PATCH 4: Skip sidebar restore on un-maximize
+old4 = 'this.$b(!e?.editorVisible),this.dc(!e?.panelVisible),this.ac(!e?.sideBarVisible)'
+new4 = 'this.$b(!e?.editorVisible),this.dc(!e?.panelVisible)'
 if old4 in content:
     content = content.replace(old4, new4, 1)
     patches += 1
-    print(f"  PATCH 4 applied: hide Open Agent Manager button")
+    print(f"  PATCH 4 applied: skip sidebar restore on un-maximize")
 else:
     print(f"  PATCH 4 skipped: already patched or version changed")
+
+# PATCH 5: Hide "Open Agent Manager" button
+old5 = 'se(this.ub,this.nb),this.kb'
+new5 = 'this.kb'
+if old5 in content:
+    content = content.replace(old5, new5, 1)
+    patches += 1
+    print(f"  PATCH 5 applied: hide Open Agent Manager button")
+else:
+    print(f"  PATCH 5 skipped: already patched or version changed")
 
 if patches > 0:
     with open(workbench, 'w') as f:
         f.write(content)
-    print(f"\n  Workbench: {patches}/4 patches applied.")
+    print(f"\n  Workbench: {patches}/5 patches applied.")
 else:
     print(f"\n  Workbench: no patches needed.")
 
