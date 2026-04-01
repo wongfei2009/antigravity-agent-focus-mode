@@ -40,21 +40,22 @@ Restart Antigravity. The extension auto-patches on first launch and prompts you 
 On startup, the extension checks if the workbench needs patching. If so, it:
 
 1. Creates backups of the original files
-2. Applies 5 surgical patches to `workbench.desktop.main.js`
+2. Applies 6 surgical patches to `workbench.desktop.main.js`
 3. Updates the checksum in `product.json` (prevents "corrupted installation" warning)
 4. Prompts you to restart
 
 After an **Antigravity update**, the extension detects the patch is missing and re-applies it automatically on next launch.
 
-### The 5 patches
+### The 6 patches
 
 | # | What | Why |
 |---|------|-----|
-| 1 | Skip hiding sidebar during auxiliary bar maximize | Sidebar stays visible in agent focus mode |
-| 2 | Grow the auxiliary bar into the old editor width | The right-side agent pane takes the reclaimed space |
-| 3 | Remove de-maximize guard from sidebar toggle | Toggling sidebar no longer undoes the maximize |
-| 4 | Skip sidebar restore on un-maximize | Sidebar was never hidden, no need to restore |
-| 5 | Hide "Open Agent Manager" button | Removes the button from the titlebar |
+| 1 | Grow auxiliary bar into former editor width | The right-side agent pane takes the reclaimed editor space |
+| 2 | Skip hiding sidebar and panel during maximize | Sidebar stays visible in agent focus mode |
+| 3 | Sidebar toggle no longer triggers de-maximize | Toggling sidebar no longer undoes the maximize |
+| 4 | Skip sidebar and panel restore on un-maximize | Sidebar was never hidden, no need to restore |
+| 5 | Hide Open Agent Manager button | Removes the button from the titlebar |
+| 6 | Auto-retry on agent error | Automatically retries up to 10 times with a ~1s delay when the agent terminates due to error |
 
 ## Commands
 
