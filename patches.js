@@ -27,7 +27,7 @@ const PATCHES = [
     {
         name: 'auto-retry on agent error',
         old: 'y=(E,S)=>({label:E,onClick:()=>{p([Vi(bT,{chunk:{case:"text",value:S}})])}});',
-        new: 'y=(E,S)=>{let _act={label:E,onClick:()=>{p([Vi(bT,{chunk:{case:"text",value:S}})])}};if(!window.__agentAutoRetry)window.__agentAutoRetry={pending:!1,count:0,ts:0};let _ar=window.__agentAutoRetry;Date.now()-_ar.ts>6e4&&(_ar.count=0);if(!_ar.pending&&_ar.count<10){_ar.pending=!0,_ar.count++,_ar.ts=Date.now();setTimeout(()=>{_ar.pending=!1,_act.onClick()},900+Math.random()*200)}return _act};',
+        new: 'y=(E,S)=>{let _act={label:E,onClick:()=>{p([Vi(bT,{chunk:{case:"text",value:S}})])}};if(!window.__agentAutoRetry)window.__agentAutoRetry={count:0,ts:0,nid:""};let _ar=window.__agentAutoRetry;Date.now()-_ar.ts>6e4&&(_ar.count=0);if(_ar.count<30&&_ar.nid!==i){_ar.nid=i;_ar.count++;_ar.ts=Date.now();setTimeout(()=>{_act.onClick()},900+Math.random()*200)}return _act};',
     },
 ];
 

@@ -55,7 +55,7 @@ After an **Antigravity update**, the extension detects the patch is missing and 
 | 3 | Sidebar toggle no longer triggers de-maximize | Toggling sidebar no longer undoes the maximize |
 | 4 | Skip sidebar and panel restore on un-maximize | Sidebar was never hidden, no need to restore |
 | 5 | Hide Open Agent Manager button | Removes the button from the titlebar |
-| 6 | Auto-retry on agent error | Automatically retries up to 10 times with a ~1s delay when the agent terminates due to error |
+| 6 | Auto-retry on agent error | Automatically retries up to 30 times with a ~1s delay when the agent terminates due to error |
 
 ## Commands
 
