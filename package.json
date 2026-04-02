@@ -4,6 +4,7 @@
   "displayName": "Agent Focus Mode",
   "description": "Maximize agent panel while keeping sidebar visible",
   "version": "0.1.0",
+  "license": "Apache-2.0",
   "engines": {
     "vscode": "^1.80.0"
   },
