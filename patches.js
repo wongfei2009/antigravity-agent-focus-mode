@@ -1,8 +1,8 @@
 const PATCHES = [
     {
         name: 'grow auxiliary bar into former editor width',
-        old: 'const i=this.H.getViewSize(this.P).width;this.nb.setRuntimeValue(tr.AUXILIARYBAR_LAST_NON_MAXIMIZED_SIZE,i),e.sideBarVisible&&this.ac(!0),e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0),this.nb.setRuntimeValue(tr.AUXILIARYBAR_LAST_NON_MAXIMIZED_VISIBILITY,e)',
-        new: 'const i=this.H.getViewSize(this.P),n=e.editorVisible?this.H.getViewSize(this.Q).width:0;this.nb.setRuntimeValue(tr.AUXILIARYBAR_LAST_NON_MAXIMIZED_SIZE,i.width),e.sideBarVisible&&this.ac(!0),e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0),this.H.resizeView(this.P,{width:i.width+n,height:i.height}),this.nb.setRuntimeValue(tr.AUXILIARYBAR_LAST_NON_MAXIMIZED_VISIBILITY,e)',
+        old: 'const i=this.H.getViewSize(this.P).width;this.nb.setRuntimeValue(er.AUXILIARYBAR_LAST_NON_MAXIMIZED_SIZE,i),e.sideBarVisible&&this.ac(!0),e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0),this.nb.setRuntimeValue(er.AUXILIARYBAR_LAST_NON_MAXIMIZED_VISIBILITY,e)',
+        new: 'const i=this.H.getViewSize(this.P),n=e.editorVisible?this.H.getViewSize(this.Q).width:0;this.nb.setRuntimeValue(er.AUXILIARYBAR_LAST_NON_MAXIMIZED_SIZE,i.width),e.sideBarVisible&&this.ac(!0),e.panelVisible&&this.dc(!0),e.editorVisible&&this.$b(!0),this.H.resizeView(this.P,{width:i.width+n,height:i.height}),this.nb.setRuntimeValue(er.AUXILIARYBAR_LAST_NON_MAXIMIZED_VISIBILITY,e)',
     },
     {
         name: 'skip hiding sidebar and panel during maximize',
@@ -26,8 +26,8 @@ const PATCHES = [
     },
     {
         name: 'auto-retry on agent error',
-        old: 'y=(E,S)=>({label:E,onClick:()=>{p([Vi(bT,{chunk:{case:"text",value:S}})])}});',
-        new: 'y=(E,S)=>{let _act={label:E,onClick:()=>{p([Vi(bT,{chunk:{case:"text",value:S}})])}};if(!window.__agentAutoRetry)window.__agentAutoRetry={count:0,ts:0,nid:""};let _ar=window.__agentAutoRetry;Date.now()-_ar.ts>6e4&&(_ar.count=0);if(_ar.count<30&&_ar.nid!==i){_ar.nid=i;_ar.count++;_ar.ts=Date.now();setTimeout(()=>{_act.onClick()},900+Math.random()*200)}return _act};',
+        old: 'v=(E,C)=>({label:E,onClick:()=>{p([Si(ET,{chunk:{case:"text",value:C}})])}});',
+        new: 'v=(E,C)=>{let _act={label:E,onClick:()=>{p([Si(ET,{chunk:{case:"text",value:C}})])}};if(!window.__agentAutoRetry)window.__agentAutoRetry={count:0,ts:0,nid:""};let _ar=window.__agentAutoRetry;Date.now()-_ar.ts>6e4&&(_ar.count=0);if(_ar.count<30&&_ar.nid!==i){_ar.nid=i;_ar.count++;_ar.ts=Date.now();setTimeout(()=>{_act.onClick()},900+Math.random()*200)}return _act};',
     },
 ];
 
