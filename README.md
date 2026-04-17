@@ -79,3 +79,4 @@ After an **Antigravity update**, the extension detects the patch is missing and 
 ## Tested on
 
 - Antigravity 1.107.0 (macOS)
+- Antigravity 1.23.2 (macOS)
